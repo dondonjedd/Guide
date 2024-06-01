@@ -3,26 +3,31 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-class PrintPageFinished extends StatelessWidget {
-  PrintPageFinished({super.key});
+class PrintScrollableWidgetAsPdfExample extends StatelessWidget {
+  PrintScrollableWidgetAsPdfExample({super.key});
 
-  //Create a global key to identify which widget to print
+  //Create a global key to identify the widget to print
   final GlobalKey<State<StatefulWidget>> printKey = GlobalKey();
 
   Future screenToPdf() async {
+    //save or print the document using the iOS or Android print service
     await Printing.layoutPdf(onLayout: (PdfPageFormat format) async {
+      //generate documen
       final doc = pw.Document();
 
-      final image = await WidgetWrapper.fromKey(
+      //get the widgetWrapper from the key
+      WidgetWrapper widgetWrapper = await WidgetWrapper.fromKey(
         key: printKey,
       );
 
+      //add the widgetWrapper with extra widgets to the document
       doc.addPage(pw.Page(
           pageFormat: format,
           build: (pw.Context context) {
-            return pw.Container(alignment: pw.Alignment.center, padding: const pw.EdgeInsets.all(48), child: pw.Image(image));
+            return pw.Container(alignment: pw.Alignment.center, padding: const pw.EdgeInsets.all(48), child: pw.Image(widgetWrapper));
           }));
 
+      //print or save document
       return await doc.save();
     });
   }
