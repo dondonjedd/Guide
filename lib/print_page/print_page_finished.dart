@@ -6,8 +6,8 @@ import 'package:printing/printing.dart';
 class PrintScrollableWidgetAsPdfExample extends StatelessWidget {
   PrintScrollableWidgetAsPdfExample({super.key});
 
-  //Create a global key to identify the widget to print
-  final GlobalKey<State<StatefulWidget>> printKey = GlobalKey();
+  //Create a global key to identify the widget to save or print
+  final GlobalKey<State<StatefulWidget>> widgetKey = GlobalKey();
 
   Future screenToPdf() async {
     //save or print the document using the iOS or Android print service
@@ -17,7 +17,7 @@ class PrintScrollableWidgetAsPdfExample extends StatelessWidget {
 
       //get the widgetWrapper from the key
       WidgetWrapper widgetWrapper = await WidgetWrapper.fromKey(
-        key: printKey,
+        key: widgetKey,
       );
 
       //add the widgetWrapper with extra widgets to the document
@@ -47,7 +47,7 @@ class PrintScrollableWidgetAsPdfExample extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: RepaintBoundary(
-          key: printKey,
+          key: widgetKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
